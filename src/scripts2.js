@@ -1,7 +1,7 @@
 import {getBlankEvent, SimplePool} from "nostr-tools";
-import { addRow, deleteRow, getValue } from './utils.js';
-document.getElementById("getValueButton").addEventListener("click", getValue);
-document.getElementById("addRowButton").addEventListener("click", addRow);
+
+// document.getElementById("getValueButton").addEventListener("click", getValue);
+// document.getElementById("addRowButton").addEventListener("click", addRow);
 const defaultRelays = 
   ["wss://relay.damus.io", 
   "wss://nostr-pub.wellorder.net", 

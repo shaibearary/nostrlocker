@@ -34,12 +34,15 @@ export function addRow() {
 		<input type="checkbox" id="writeCheckbox" name="write">
 	`;
 
-	var deleteButton = document.createElement("input");
-	deleteButton.type = "button";
-	deleteButton.value = "Delete";
-	deleteButton.onclick = function() {
+	var deleteButton= document.createElement("a");
+	deleteButton.setAttribute("href", "#");
+	deleteButton.setAttribute("role", "button");
+	deleteButton.textContent = "Delete";
+	
+	// Add an event listener to the link element
+	deleteButton.addEventListener("click", function() {
 		deleteRow(newRowDiv);
-	};
+	});
 
 	newRowDiv.appendChild(rowDiv1);
 	newRowDiv.appendChild(rowDiv2);
