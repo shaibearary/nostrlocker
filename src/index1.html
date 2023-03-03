@@ -2,35 +2,7 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="style.css">
-    <style>
-      /* Style the sidebar */
-      .sidebar {
-        height: 100%; /* Full-height sidebar */
-        width: 200px; /* Set the width of the sidebar */
-        position: fixed; /* Make the sidebar stay in place */
-        z-index: 1; /* Stay on top of everything */
-        top: 0; /* Position the sidebar at the top of the page */
-        left: 0; /* Position the sidebar on the left side */
-        background-color: #f1f1f1; /* Set a background color */
-        overflow-x: hidden; /* Disable horizontal scroll */
-        padding-top: 20px; /* Add some padding at the top */
-      }
 
-      /* Style the links inside the sidebar */
-      .sidebar a {
-        padding: 6px 8px 6px 16px;
-        text-decoration: none;
-        font-size: 20px;
-        color: #000000;
-        display: block;
-      }
-
-      /* Change the color of the links on hover */
-      .sidebar a:hover {
-        background-color: #555;
-        color: white;
-      }
-    </style>
   </head>
   <body>
     <!-- The sidebar -->
@@ -95,12 +67,13 @@
             
             <a href="#" role="button" onclick="deleteRow(this.parentNode)">Delete</a>
             <!-- <input role="button" type="button" value="Delete" onclick="deleteRow(this.parentNode)"> -->
-          </lable>
+          </div>
 		
     </form>
     <div id="myRows"></div>
 
-    <input type="button" value="Add Row" id="addRowBtn">
+    <input type="button" value="Add Relay" id="addRowBtn">
+    <input type="button" value="Submit" id="submitRelaysBtn">
 
         <div>
         
@@ -118,7 +91,7 @@
               </div>
               <div class="input-group">
 
-                <button  type="button" id="submit-nprofile-button">Submit</button>
+                <button  type="button" id="parse-nprofile-button">Parse nprofile</button>
               </div>
             </form>
           </ul>

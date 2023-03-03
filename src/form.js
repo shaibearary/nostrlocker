@@ -1,14 +1,39 @@
-export function getValue() {
-	var form = document.getElementById("myForm");
-	var relayValue = form.elements["relay"].value;
-	var readChecked = form.elements["read"].checked;
-	var writeChecked = form.elements["write"].checked;
+import { nip19, getBlankEvent, SimplePool } from "nostr-tools";
 
-	alert("Relay: " + relayValue + "\nRead: " + readChecked + "\nWrite: " + writeChecked);
+export function getValue() {
+	
+	var form = document.getElementById("myForm");
+	const formRowContainers = form.getElementsByClassName("form-row-container");
+	const formDataArray = []
+	// Loop through each form row container
+	for (let i = 0; i < formRowContainers.length; i++) {
+	  const formRowContainer = formRowContainers[i];
+	  const oneRawData = []
+	  // Get the value of the Relay input
+	  let relayInput = formRowContainer.querySelector('input[name="relay"]').value;
+		
+	  // Get the value of the Read checkbox
+	  let readCheckbox = formRowContainer.querySelector('input[name="read"]').checked;
+	
+	  // Get the value of the Write checkbox
+	  let writeCheckbox = formRowContainer.querySelector('input[name="write"]').checked;
+	  oneRawData.push('r',relayInput)
+	 
+	  if(readCheckbox==true){
+		oneRawData.push('read')
+	  }
+	  if(writeCheckbox==true){
+		oneRawData.push('write')
+	  }
+
+	  formDataArray.push(oneRawData)
+	}
+
+	return formDataArray;
 }
 
 export function addRow() {
-	var rowsDiv = document.getElementById("myRows");
+	var rowsDiv = document.getElementById("myForm");
 
 	var newRowDiv = document.createElement("div");
 	newRowDiv.classList.add("form-row-container");

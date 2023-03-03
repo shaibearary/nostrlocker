@@ -149,3 +149,50 @@ ol {display: table; margin-left: 0; margin-right: auto; list-style-position: ins
 }
 
 
+.sidebar {
+  position: fixed;
+  top: 50%;
+  left: -200px;
+  width: 200px;
+  height: 200px;
+  background-color: #333;
+  color: #f2f2f2;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: left 0.3s ease-in-out;
+  display: none;
+}
+
+.sidebar.active {
+  display: block;
+  left: 0;
+}
+
+.sidebar h3 {
+  margin: 0;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.sidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar li a {
+  display: block;
+  padding: 10px;
+  color: #f2f2f2;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.sidebar li a:hover {
+  background-color: #444;
+}

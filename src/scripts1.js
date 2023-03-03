@@ -1,5 +1,5 @@
 import { nip19, getBlankEvent, SimplePool } from "nostr-tools";
-
+import { getValue, addRow } from './form.js';
 const defaultRelays =
   ["wss://relay.damus.io",
     "wss://nostr-pub.wellorder.net",
@@ -8,7 +8,7 @@ const defaultRelays =
     "wss://nostr-relay.wlvs.space"]
 
 
-const pool = new SimplePool();
+export const pool = new SimplePool();
 let state = null;
 
 window.addEventListener("load", async () => {
@@ -24,115 +24,90 @@ window.addEventListener("load", async () => {
  
   const form = document.getElementById("form");
   restore()
-  async function submitRelays() {
-    const relaysObj = new Map()
-    const event = getBlankEvent();
-    var inputAreas = Array.from(document.getElementsByClassName("input-relay-area"));
-    inputAreas.forEach(async function (inputArea) {
-      relaysObj[inputArea.value] = { read: true, write: true };
-    })
-    event.kind = 3;
-    event.pubkey = await nostr.getPublicKey();
-    event.content = JSON.stringify(relaysObj);
-    event.created_at = Math.floor(Date.now() / 1000);
-    try {
-
-      event.tags = JSON.parse(localStorage.getItem('kind3Event')).tags
-    } catch (error) {
-      console.error(`Error: ${error.message}`);
+  async function submitRelays() {	
+    console.log('submit')
+    var form = document.getElementById("myForm");
+      const relaysObj = getValue()
+      const event = getBlankEvent();
+  
+      event.kind = 10002;
+      event.pubkey = await nostr.getPublicKey();
+      // event.content = JSON.stringify(relaysObj);
+      event.created_at = Math.floor(Date.now() / 1000);
+    event.tags = relaysObj
+  
+      let storedEvent = JSON.stringify(event);
+      localStorage.setItem('nip65Event', storedEvent);
+  
+  
+      try {
+        const signed = await nostr.signEvent(event);
+        let pubs = pool.publish(defaultRelays, signed)
+        pubs.on('ok', () => {
+          console.log(`has accepted our event`)
+        })
+        pubs.on('failed', reason => {
+          console.log(`failed to publish to : ${reason}`)
+        })
+  
+        form.reset();
+      } catch (error) {
+        console.error(error);
+      }
+      // location.reload()
+  
     }
-    let storedEvent = JSON.stringify(event);
-    localStorage.setItem('kind3Event', storedEvent);
-
-
-    try {
-      const signed = await nostr.signEvent(event);
-      let pubs = pool.publish(defaultRelays, signed)
-      pubs.on('ok', () => {
-        console.log(`has accepted our event`)
-      })
-      pubs.on('failed', reason => {
-        console.log(`failed to publish to : ${reason}`)
-      })
-
-      form.reset();
-    } catch (error) {
-      console.error(error);
+  async function restore() {
+    let kind3Event = JSON.parse(localStorage.getItem('kind3Event'))
+    if (kind3Event != null) {
+      
+      populateRelays(kind3Event)
+     
     }
-    // location.reload()
-
   }
-  // 
-
-
-  // Get the values of the form elements
-  // var nameVal = myForm["name"].value;
-  // var emailVal = myForm["email"].value;
-  // var messageVal = myForm["message"].value;
-
-  // // Display the values in an alert box
-  // alert("Name: " + nameVal + "\nEmail: " + emailVal + "\nMessage: " + messageVal);
-
-  async function submitnprofile() {
- 
+  async function parsenprofile() {
+    let relays = [];
     let nprofile = document.getElementById("input-nprofile-area").value
     let { type, data } = nip19.decode(nprofile)
-    if (type === 'nprofile') {
-      let relays = data.relays
-    }
-    // console.log("2")
-    const event = getBlankEvent();
-    relays.forEach(async function (relay) {
-      relaysObj[relay] = { read: true, write: true };
-    })
-    event.kind = 3;
-    event.pubkey = await nostr.getPublicKey();
-    event.content = JSON.stringify(relaysObj);
-    event.created_at = Math.floor(Date.now() / 1000);
-    try {
 
-      event.tags = JSON.parse(localStorage.getItem('kind3Event')).tags
-    } catch (error) {
-      console.error(`Error: ${error.message}`);
+    if (type === 'nprofile' ) {
+      if(data.pubkey!=pubkey){
+        alert("This NProfile does not belong to your public key")
+        relays = data.relays
+      }
+      relays = data.relays
     }
-    let storedEvent = JSON.stringify(event);
-    localStorage.setItem('kind3Event', storedEvent);
-
-
-    try {
-      const signed = await nostr.signEvent(event);
-      let pubs = pool.publish(defaultRelays, signed)
-      pubs.on('ok', () => {
-        console.log(`has accepted our event`)
-      })
-      pubs.on('failed', reason => {
-        console.log(`failed to publish to : ${reason}`)
-      })
-      form.reset();
-    } catch (error) {
-      console.error(error);
+    else{
+      return
     }
-    location.reload()
+    if (relays.length == 1) {
+      document.getElementsByName("relay")[0].value = relays[0]
+    }
+    else {
+      document.getElementsByName("relay")[0].value = relays[0]
+      // const keys = Object.keys(state.content);
+      for (let i = 1; i < relays.length; i++) {
+        addRow()
+        document.getElementsByName("relay")[i].value = relays[i]
+      }
+    }
+    
+    
+    
 
   }
-  const subnprofile = document.getElementById("submit-nprofile-button");
-  const addButton = document.getElementById("add-button");
-  const submitButton = document.getElementById("submit-relay-button");
+  const profileBtn = document.getElementById("parse-nprofile-button");
+  // const addButton = document.getElementById("add-button");
+  const submitBtn = document.getElementById("submitRelaysBtn");
 
-  addButton.addEventListener("click", addInput);
-  submitButton.addEventListener("click", submitRelays);
-  subnprofile.addEventListener("click", submitnprofile);
 
+  submitBtn.addEventListener("click", submitRelays);
+  profileBtn.addEventListener("click", parsenprofile);
+
+  
 
 });
-async function restore() {
-  let kind3Event = JSON.parse(localStorage.getItem('kind3Event'))
-  if (kind3Event != null) {
-    
-    populateRelays(kind3Event)
-   
-  }
-}
+
 export default async function startPool(pubkey) {
   const userRelays = await nostr?.getRelays?.() || [];
   const relays = defaultRelays;
