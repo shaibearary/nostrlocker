@@ -76,16 +76,25 @@
           >) to use this tool</small
         >
       </div>
-      <form id="form">
-        <div id="input-container">
-          <div class="input-group">
-            <input type="text" class="input-contact-area">
-            <button  type="button" class="delete-button">Delete</button>
+      <form id="myForm">
+        <div class="form-row-container">
+          <div class="form-row">
+            <label for="relayInput">Relay:</label>
+            <input type="text" id="relayInput" name="relay">
           </div>
-        </div>
-        <div class="input-group">
-          <button  type="button" id="add-button">Add contact</button>
-          <button  type="button" id="submit-contact-button">Submit</button>
+    
+          <div class="form-row">
+            <label for="readCheckbox">Read:</label>
+            <input type="checkbox" id="readCheckbox" name="read">
+          </div>
+    
+          <div class="form-row">
+            <label for="writeCheckbox">Write:</label>
+            <input type="checkbox" id="writeCheckbox" name="write">
+          </div>
+    
+          <input type="button" id="Delete" onclick="deleteRow(this.parentNode)">
+          <input type="button" id="Add Row" onclick="addRow()">
         </div>
       </form>
     </main>
