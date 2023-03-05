@@ -25,7 +25,7 @@ window.addEventListener("load", async () => {
   const form = document.getElementById("form");
   restore()
   async function submitRelays() {
-    console.log('sss')
+
     const event = getBlankEvent();
     var inputAreas = Array.from(document.getElementsByClassName("input-relay-area"));
     inputAreas.forEach(async function (inputArea) {
@@ -77,7 +77,7 @@ window.addEventListener("load", async () => {
   // alert("Name: " + nameVal + "\nEmail: " + emailVal + "\nMessage: " + messageVal);
 
   async function submitnprofile() {
-    console.log("1")
+ 
     nprofile = document.getElementById("input-nprofile-area").value
     let { type, data } = nip19.decode(nprofile)
     if (type === 'nprofile') {
@@ -133,7 +133,7 @@ window.addEventListener("load", async () => {
 
 });
 async function restore() {
-  kind3Event = JSON.parse(localStorage.getItem('kind3Event'))
+  let kind3Event = JSON.parse(localStorage.getItem('kind3Event'))
   if (kind3Event != null) {
     
     populateRelays(kind3Event)

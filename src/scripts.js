@@ -79,7 +79,7 @@ window.addEventListener("load", async () => {
   }
 });
 async function restore(pubkey) {
-  metadata = JSON.parse(localStorage.getItem('metadata'))
+  let metadata = JSON.parse(localStorage.getItem('metadata'))
   if (localStorage.getItem('metadata') != null) {
     console.log()
     populateInputs(metadata)

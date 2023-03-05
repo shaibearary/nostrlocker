@@ -70,8 +70,8 @@ window.addEventListener("load", async () => {
 
 });
 async function restore() {
-  console.log('wtf2')
-  // kind3Event = JSON.parse(localStorage.getItem('kind3Event'))
+
+  let kind3Event = JSON.parse(localStorage.getItem('kind3Event'))
   if (kind3Event!=null){
     console.log('wtf3')
     populateContacts(kind3Event)
