@@ -21,11 +21,11 @@ window.addEventListener("load", async () => {
   const nostr = window.nostr;
   const pubkey = await nostr.getPublicKey();
   startPool(pubkey)
-  const relaysObj = new Map()
+ 
   const form = document.getElementById("form");
   restore()
   async function submitRelays() {
-
+    const relaysObj = new Map()
     const event = getBlankEvent();
     var inputAreas = Array.from(document.getElementsByClassName("input-relay-area"));
     inputAreas.forEach(async function (inputArea) {
@@ -48,14 +48,11 @@ window.addEventListener("load", async () => {
     try {
       const signed = await nostr.signEvent(event);
       let pubs = pool.publish(defaultRelays, signed)
-      pubs.on('ok', (status, url) => {
-        if (status === 0) {
-          console.log(`publish request sent to ${url}`);
-        }
-        if (status === 1) {
-          console.log(`event published by ${url}`, ev);
-        }
-
+      pubs.on('ok', () => {
+        console.log(`has accepted our event`)
+      })
+      pubs.on('failed', reason => {
+        console.log(`failed to publish to : ${reason}`)
       })
 
       form.reset();
