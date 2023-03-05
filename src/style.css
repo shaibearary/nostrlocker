@@ -1,0 +1,15 @@
+.input-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* add this line to space out the input and button */
+  }
+  
+  #input-area {
+    width: 75%;
+  }
+  
+  #submit-button {
+    width: 25%;
+    margin-left: 1em; /* add this line to add some space between the button and the input */
+  }
+  
