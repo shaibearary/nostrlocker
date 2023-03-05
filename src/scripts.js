@@ -8,7 +8,7 @@ let  defaultRelays =
 
 const pool = new SimplePool();
 let state = null;
-relayList = null
+// relayList = null
 
 window.addEventListener("load", async () => {
   console.log("a")
@@ -81,7 +81,7 @@ window.addEventListener("load", async () => {
 async function restore(pubkey) {
   metadata = JSON.parse(localStorage.getItem('metadata'))
   if (localStorage.getItem('metadata') != null) {
-
+    console.log()
     populateInputs(metadata)
   }
   startPool(pubkey)
@@ -97,9 +97,9 @@ export default async function startPool(pubkey) {
       { authors: [pubkey], kinds: [0] }
     ]
   )
-  for (const key in userRelays) {
-    relays.set(key, userRelays[key]);
-  }
+  // for (const key in userRelays) {
+  //   relays.set(key, userRelays[key]);
+  // }
   relays.forEach((policy, url) => {
     // pool.addRelay(url, policy);
   });
