@@ -62,7 +62,7 @@ window.addEventListener("load", async () => {
     } catch (error) {
       console.error(error);
     }
-    location.reload()
+    // location.reload()
 
   }
   // 
@@ -78,12 +78,12 @@ window.addEventListener("load", async () => {
 
   async function submitnprofile() {
  
-    nprofile = document.getElementById("input-nprofile-area").value
+    let nprofile = document.getElementById("input-nprofile-area").value
     let { type, data } = nip19.decode(nprofile)
     if (type === 'nprofile') {
-      relays = data.relays
+      let relays = data.relays
     }
-    console.log("2")
+    // console.log("2")
     const event = getBlankEvent();
     relays.forEach(async function (relay) {
       relaysObj[relay] = { read: true, write: true };
@@ -105,15 +105,11 @@ window.addEventListener("load", async () => {
     try {
       const signed = await nostr.signEvent(event);
       let pubs = pool.publish(defaultRelays, signed)
-      pubs.on('ok', (status, url) => {
-        if (status === 0) {
-          console.log(`publish request sent to ${url}`);
-        }
-        if (status === 1) {
-          console.log(`event published by ${url}`, ev);
-        }
-        // this may be called multiple times, once for every relay that accepts the event
-        // ...
+      pubs.on('ok', () => {
+        console.log(`has accepted our event`)
+      })
+      pubs.on('failed', reason => {
+        console.log(`failed to publish to : ${reason}`)
       })
       form.reset();
     } catch (error) {
@@ -160,6 +156,7 @@ export default async function startPool(pubkey) {
 }
 function populateRelays(event, relay) {
   if (state && state.created_at > event.created_at) return;
+  if( event.content=="") return;
   state = {
     created_at: event.created_at,
     content: JSON.parse(event.content)

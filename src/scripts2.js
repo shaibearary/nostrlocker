@@ -46,22 +46,20 @@ window.addEventListener("load", async () => {
     localStorage.setItem('kind3Event', storedEvent);
 
 
-      try {
-        const signed =  await nostr.signEvent(event);
-        let pubs = pool.publish(defaultRelays, signed)
-        pubs.on('ok', (status, url) => {
-          if (status === 0) {
-            console.log(`publish request sent to ${url}`);
-          }
-          if (status === 1) {
-            console.log(`event published by ${url}`, ev);
-          }
-        });
-        form.reset();
-      } catch (error) {
-        console.error(error);
-      }
-      location.reload()
+    try {
+      const signed =  await nostr.signEvent(event);
+      let pubs = pool.publish(defaultRelays, signed)
+      pubs.on('ok', () => {
+        console.log(`has accepted our event`)
+      })
+      pubs.on('failed', reason => {
+        console.log(`failed to publish to : ${reason}`)
+      })
+      form.reset();
+    } catch (error) {
+      console.error(error);
+    }
+    // location.reload()
   }
 
   addButton.addEventListener("click", addInput);
@@ -102,8 +100,8 @@ function populateContacts(event, relay) {
     created_at: event.created_at,
     tags: event.tags
   };
-  contacts = state.tags.map(innerArr => innerArr[1]);
-  console.log(contacts,'aaaaaaa')
+  let contacts = state.tags.map(innerArr => innerArr[1]);
+
   if (state.tags.length==1){
     document.getElementsByClassName("input-contact-area")[0].value = contacts[0]
   }
