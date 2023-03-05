@@ -59,7 +59,7 @@ window.addEventListener("load", async () => {
     event.content = JSON.stringify(content);
     event.created_at = Math.floor(Date.now() / 1000);
     console.log(event);
-    storedEvent = JSON.stringify(event);
+    let storedEvent = JSON.stringify(event);
     localStorage.setItem('metadata', storedEvent);
     try {
       const signed = await nostr.signEvent(event);

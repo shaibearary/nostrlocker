@@ -42,7 +42,7 @@ window.addEventListener("load", async () => {
     } catch (error) {
       console.error(`Error: ${error.message}`);
     }
-    storedEvent = JSON.stringify(event);
+    let storedEvent = JSON.stringify(event);
     localStorage.setItem('kind3Event', storedEvent);
 
 
