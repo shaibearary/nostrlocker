@@ -1,15 +1,248 @@
+
+body {
+margin: 0;
+padding: 0;
+background-color: #1A1A1A;
+line-height: 1.5;
+font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;;
+}
+h1, h2, h3, h4, h5, h6, h7, h8 {
+color: #B5E853;
+line-height: 1.5;
+font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;;
+text-align: left;
+margin: 0 0 20px;
+}
+p {
+color: #FFFFFF;
+padding-left: 30px;
+font-size: 15px;
+font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;;
+}
+.hr {
+border: 0;
+border-top: 2px dashed #B5E853;
+}
+li {
+color: #FFFFFF;
+font-size: 15px;
+font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;;
+}
+.button {
+text-decoration: none;
+text-align: left;
+background-color: #121212;
+color: white;
+border: 2px solid #000000;
+border-radius: 15px;
+padding: 10px 14px;
+font-size: 14px;
+display: inline-block;
+padding-left: 10px;
+}
+blockquote {
+border-left-style: dotted;
+border-left-width: 1px;
+border-left-color: gray;
+color: #8D8D8D;
+padding: 20px;
+}
+td {
+color: #FFFFFF;
+border-spacing: 20px;
+text-align: left;
+padding: 8px;
+}
+th {
+color: #FFFFFF;
+border-bottom: 1px dashed #B5E853;
+text-align: left;
+padding: 8px;
+}
+dl {
+color: #FFFFFF;
+text-align: left;
+padding: 5px;
+}
+dt {
+color: #FFFFFF;
+font-weight: bold;
+}
+.smallimg {
+background-attachment: fixed;
+background-position: left;
+background-repeat: no-repeat;
+background-size: cover;
+width: 100px;
+height: 100px;
+}
+.largeimg {
+background-attachment: fixed;
+background-position: left;
+background-repeat: no-repeat;
+background-size: cover;
+max-width: 100%;
+max-height: 100%;
+display: block;
+}
+.horizontalscroll {
+background-color: #242424;
+font-style: italic;
+overflow: auto;
+white-space: nowrap;
+color: #FFFFFF;
+padding: 10px;
+}
+ul {list-style: none;}
+ul li::before {content: ">>  "; color: #B5E853;}
+ol {display: table; margin-left: 0; margin-right: auto; list-style-position: inside;}
+/*  font style  */
+.bold {font-weight: bold;}
+.ital {font-style: italic;}
+.oblique {font-style: oblique;}
+.overline {text-decoration: overline;}
+.strickthrough {text-decoration: line-through;}
+.underline {text-decoration: underline;}
+.keyword {color: #E867E8; border: 1px solid gray; background-color: black; padding: 2px 2px; }
+.linkk {color: #6CBDEC; text-decoration: underline;}
+.w3-black,.w3-hover-black:hover{color:#BAB9B9!important;background-color:#000!important}
+/* margin for button */
+.leftmar {margin-left: 30px;}
+/* font colour*/
+.gray {color: #8D8D8D;}
+.green {color: #B5E853;}
+/* padding */
+.topp {padding-top: 10px;}
+.left {padding-left: 30px}
+.mediumsize {font-size: 19px;}
+
+
+
+
+.form-row {
+  display: inline-block;
+}
+
+.form-row * {
+  display: inline-block;
+}
+/* .input-group {
+  display: inline-block;
+}
+
+.input-group * {
+  display: inline-block;
+} */
+
 .input-group {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* add this line to space out the input and button */
-  }
-  
-  #input-area {
-    width: 75%;
-  }
-  
-  #submit-button {
-    width: 25%;
-    margin-left: 1em; /* add this line to add some space between the button and the input */
-  }
-  
+  display: flex;
+  align-items: center;
+}
+
+.input-contact-area {
+  flex: 1;
+}
+
+/* .delete-button {
+  flex: 0 0 20%;
+  margin-left: 10%;
+} */
+/* Style for the navigation bar container */
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  height: 60px;
+  padding: 0 30px;
+  box-sizing: border-box;
+  width: 100%;
+
+}
+
+.navbar .nav-link {
+  text-transform: uppercase;
+}
+/* Style for the links within the navigation bar */
+.navbar a {
+  font-size: 18px;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-right: 20px;
+  padding: 0 10px;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+/* Style for the active link within the navigation bar */
+.navbar a.active {
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+/* Style for links on hover within the navigation bar */
+.navbar a:hover {
+  color: #4CAF50;
+}
+
+/* Style for the bar to separate the links */
+/* .navbar::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-50%);
+} */
+
+/* Style to position the links to the left */
+.navbar__links {
+  margin-right: auto;
+}
+
+/* .form-row-container label {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding-right: 10px;
+} */
+
+
+.delete-button {
+  flex: 0 0 20%;
+  margin-left: 10%;
+}
+/* 
+.form-row {
+  display: inline-block;
+}
+
+.form-row * {
+  display: inline-block;
+} */
+/* .input-group {
+  display: inline-block;
+} */
+
+/* div {
+  display: inline-block;
+} */
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input-contact-area {
+  flex: 1;
+}
+
+
+
+

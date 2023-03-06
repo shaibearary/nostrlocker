@@ -1,5 +1,5 @@
 import { nip19, getBlankEvent, SimplePool } from "nostr-tools";
-
+import { getValue, addRowTable } from './form.js';
 const defaultRelays =
   ["wss://relay.damus.io",
     "wss://nostr-pub.wellorder.net",
@@ -8,7 +8,7 @@ const defaultRelays =
     "wss://nostr-relay.wlvs.space"]
 
 
-const pool = new SimplePool();
+export const pool = new SimplePool();
 let state = null;
 
 window.addEventListener("load", async () => {
@@ -24,115 +24,90 @@ window.addEventListener("load", async () => {
  
   const form = document.getElementById("form");
   restore()
-  async function submitRelays() {
-    const relaysObj = new Map()
-    const event = getBlankEvent();
-    var inputAreas = Array.from(document.getElementsByClassName("input-relay-area"));
-    inputAreas.forEach(async function (inputArea) {
-      relaysObj[inputArea.value] = { read: true, write: true };
-    })
-    event.kind = 3;
-    event.pubkey = await nostr.getPublicKey();
-    event.content = JSON.stringify(relaysObj);
-    event.created_at = Math.floor(Date.now() / 1000);
-    try {
-
-      event.tags = JSON.parse(localStorage.getItem('kind3Event')).tags
-    } catch (error) {
-      console.error(`Error: ${error.message}`);
+  async function submitRelays() {	
+    console.log('submit')
+    var form = document.getElementById("myForm");
+      const relaysObj = getValue()
+      const event = getBlankEvent();
+  
+      event.kind = 10002;
+      event.pubkey = await nostr.getPublicKey();
+      // event.content = JSON.stringify(relaysObj);
+      event.created_at = Math.floor(Date.now() / 1000);
+      event.tags = relaysObj
+  
+      let storedEvent = JSON.stringify(event);
+      localStorage.setItem('nip65Event', storedEvent);
+  
+  
+      try {
+        const signed = await nostr.signEvent(event);
+        let pubs = pool.publish(defaultRelays, signed)
+        pubs.on('ok', () => {
+          console.log(`has accepted our event`)
+        })
+        pubs.on('failed', reason => {
+          console.log(`failed to publish to : ${reason}`)
+        })
+  
+        form.reset();
+      } catch (error) {
+        console.error(error);
+      }
+      // location.reload()
+  
     }
-    let storedEvent = JSON.stringify(event);
-    localStorage.setItem('kind3Event', storedEvent);
-
-
-    try {
-      const signed = await nostr.signEvent(event);
-      let pubs = pool.publish(defaultRelays, signed)
-      pubs.on('ok', () => {
-        console.log(`has accepted our event`)
-      })
-      pubs.on('failed', reason => {
-        console.log(`failed to publish to : ${reason}`)
-      })
-
-      form.reset();
-    } catch (error) {
-      console.error(error);
+  async function restore() {
+    let nip65Event = JSON.parse(localStorage.getItem('nip65Event'))
+    if (nip65Event != null) {
+      
+      populateRelays(nip65Event)
+     
     }
-    // location.reload()
-
   }
-  // 
-
-
-  // Get the values of the form elements
-  // var nameVal = myForm["name"].value;
-  // var emailVal = myForm["email"].value;
-  // var messageVal = myForm["message"].value;
-
-  // // Display the values in an alert box
-  // alert("Name: " + nameVal + "\nEmail: " + emailVal + "\nMessage: " + messageVal);
-
-  async function submitnprofile() {
- 
+  async function parsenprofile() {
+    let relays = [];
     let nprofile = document.getElementById("input-nprofile-area").value
     let { type, data } = nip19.decode(nprofile)
-    if (type === 'nprofile') {
-      let relays = data.relays
-    }
-    // console.log("2")
-    const event = getBlankEvent();
-    relays.forEach(async function (relay) {
-      relaysObj[relay] = { read: true, write: true };
-    })
-    event.kind = 3;
-    event.pubkey = await nostr.getPublicKey();
-    event.content = JSON.stringify(relaysObj);
-    event.created_at = Math.floor(Date.now() / 1000);
-    try {
 
-      event.tags = JSON.parse(localStorage.getItem('kind3Event')).tags
-    } catch (error) {
-      console.error(`Error: ${error.message}`);
+    if (type === 'nprofile' ) {
+      if(data.pubkey!=pubkey){
+        alert("This NProfile does not belong to your public key")
+        relays = data.relays
+      }
+      relays = data.relays
     }
-    let storedEvent = JSON.stringify(event);
-    localStorage.setItem('kind3Event', storedEvent);
-
-
-    try {
-      const signed = await nostr.signEvent(event);
-      let pubs = pool.publish(defaultRelays, signed)
-      pubs.on('ok', () => {
-        console.log(`has accepted our event`)
-      })
-      pubs.on('failed', reason => {
-        console.log(`failed to publish to : ${reason}`)
-      })
-      form.reset();
-    } catch (error) {
-      console.error(error);
+    else{
+      return
     }
-    location.reload()
+    if (relays.length == 1) {
+      document.getElementsByName("relay")[0].value = relays[0]
+    }
+    else {
+      document.getElementsByName("relay")[0].value = relays[0]
+      // const keys = Object.keys(state.content);
+      for (let i = 1; i < relays.length; i++) {
+        addRowTable()
+        document.getElementsByName("relay")[i].value = relays[i]
+      }
+    }
+    
+    
+    
 
   }
-  const subnprofile = document.getElementById("submit-nprofile-button");
-  const addButton = document.getElementById("add-button");
-  const submitButton = document.getElementById("submit-relay-button");
+  const profileBtn = document.getElementById("parse-nprofile-button");
+  // const addButton = document.getElementById("add-button");
+  const submitBtn = document.getElementById("submitRelaysBtn");
 
-  addButton.addEventListener("click", addInput);
-  submitButton.addEventListener("click", submitRelays);
-  subnprofile.addEventListener("click", submitnprofile);
 
+  submitBtn.addEventListener("click", submitRelays);
+  profileBtn.addEventListener("click", parsenprofile);
+
+  
 
 });
-async function restore() {
-  let kind3Event = JSON.parse(localStorage.getItem('kind3Event'))
-  if (kind3Event != null) {
-    
-    populateRelays(kind3Event)
-   
-  }
-}
+
 export default async function startPool(pubkey) {
   const userRelays = await nostr?.getRelays?.() || [];
   const relays = defaultRelays;
@@ -153,35 +128,26 @@ export default async function startPool(pubkey) {
 }
 function populateRelays(event, relay) {
   if (state && state.created_at > event.created_at) return;
-  if( event.content=="") return;
-  state = {
-    created_at: event.created_at,
-    content: JSON.parse(event.content)
-  };
-  if (state.content.length == 1) {
-    document.getElementsByClassName("input-relay-area")[0].value = Object.keys(state.content)[0]
+
+  let tags = event.tags
+  if (tags.length==0){
+    return;
   }
   else {
-    document.getElementsByClassName("input-relay-area")[0].value = Object.keys(state.content)[0]
-    const keys = Object.keys(state.content);
-    for (let i = 1; i < keys.length; i++) {
-      addInput()
-      document.getElementsByClassName("input-relay-area")[i].value = Object.keys(state.content)[i]
-    }
+    console.log(tags[0].includes('read'))
+    document.getElementsByName("relay")[0].value =tags[0][1]||""
+    document.getElementsByName("read")[0].checked = tags[0].includes('read')
+    document.getElementsByName("write")[0].checked =tags[0].includes('write')
+    // const keys = Object.keys(state.content);
+    for (let i = 1; i < tags.length; i++) {
+      addRowTable()
+      console.log(Boolean(tags[i][3]))
+      document.getElementsByName("relay")[i].value =tags[i][1]||""
+      document.getElementsByName("read")[i].checked= tags[i].includes('read')
+      document.getElementsByName("write")[i].checked =tags[i].includes('write')
   }
 
-
-  async function startPool(pubkey) {
-    const userRelays = await nostr?.getRelays?.() || [];
-    const relays = defaultRelays;
-    for (const key in userRelays) {
-      relays.set(key, userRelays[key]);
-    }
-    relays.forEach((policy, url) => {
-      pool.addRelay(url, policy);
-    });
-    console.log(`fetch metadata from ${pubkey}`);
-    pool.sub({ cb: populateInputs, filter: { authors: [pubkey], kinds: [0] } });
+  
   }
 }
 
@@ -209,28 +175,4 @@ const inputContainer = document.getElementById("input-container");
 const subnprofile = document.getElementById("submit-nprofile-button");
 const addButton = document.getElementById("add-button");
 const submitButton = document.getElementById("submit-relay-button");
-
-
-
-function addInput() {
-  const inputGroup = document.createElement("div");
-  inputGroup.classList.add("input-group");
-
-  const inputArea = document.createElement("input");
-  inputArea.type = "text";
-  inputArea.classList.add("input-relay-area");
-
-  const deleteButton = document.createElement("button");
-  deleteButton.innerText = "Delete";
-  deleteButton.classList.add("delete-button");
-
-  deleteButton.addEventListener("click", () => {
-    inputGroup.remove();
-  });
-
-  inputGroup.appendChild(inputArea);
-  inputGroup.appendChild(deleteButton);
-  inputContainer.appendChild(inputGroup);
-}
-
 

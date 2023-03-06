@@ -2,42 +2,14 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="style.css">
-    <style>
-      /* Style the sidebar */
-      .sidebar {
-        height: 100%; /* Full-height sidebar */
-        width: 200px; /* Set the width of the sidebar */
-        position: fixed; /* Make the sidebar stay in place */
-        z-index: 1; /* Stay on top of everything */
-        top: 0; /* Position the sidebar at the top of the page */
-        left: 0; /* Position the sidebar on the left side */
-        background-color: #f1f1f1; /* Set a background color */
-        overflow-x: hidden; /* Disable horizontal scroll */
-        padding-top: 20px; /* Add some padding at the top */
-      }
 
-      /* Style the links inside the sidebar */
-      .sidebar a {
-        padding: 6px 8px 6px 16px;
-        text-decoration: none;
-        font-size: 20px;
-        color: #000000;
-        display: block;
-      }
-
-      /* Change the color of the links on hover */
-      .sidebar a:hover {
-        background-color: #555;
-        color: white;
-      }
-    </style>
   </head>
   <body>
     <!-- The sidebar -->
-    <div class="sidebar">
+    <div class="navbar">
       <a href="index.html">Set metadata</a>
        <a href="index1.html">Manage relay list</a>
-      <a href="index2.html">Manage contact list</a> -->
+      <a href="index2.html">Manage contact list</a> 
     </div>
     <meta charset="UTF-8" />
     <meta
@@ -76,19 +48,31 @@
           >) to use this tool</small
         >
       </div>
-      <form id="form">
-        <div id="input-container">
-          <div class="input-group">
-            <input type="text" class="input-relay-area">
-            <button  type="button" class="delete-button">Delete</button>
-          </div>
-        </div>
-        <div class="input-group">
-          <button  type="button" id="add-button">Add Relay</button>
-          <button  type="button" id="submit-relay-button">Submit</button>
-        </div>
-      </form>
-     
+      <table id="table">
+		<thead>
+			<tr>
+				<th>Relay</th>
+				<th>Read</th>
+				<th>Write</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input type="text" id="relayInput" name="relay"></td>
+				<td><input type="checkbox" id="readCheckbox" name="read"></td>
+				<td><input type="checkbox" id="writeCheckbox" name="write"></td>
+				<td><a href="#" role="button" class="delete-row">Delete</a></td>
+			</tr>
+
+			<!-- Add more rows here -->
+		</tbody>
+	</table>
+    <div id="myRows"></div>
+    <div class="grid">
+    <input type="button" value="Add Relay" id="addRowBtn">
+    <input type="button" value="Submit" id="submitRelaysBtn">
+      </div>
         <div>
         
           <hr class="split-line">
@@ -105,7 +89,7 @@
               </div>
               <div class="input-group">
 
-                <button  type="button" id="submit-nprofile-button">Submit</button>
+                <button  type="button" id="parse-nprofile-button">Parse nprofile</button>
               </div>
             </form>
           </ul>
@@ -134,6 +118,7 @@
     <script
       type="module"
       src="scripts1.js"></script>
+      <script type="module" src="main.js"></script>
       <!-- <script
       type="module"
       src="scripts.js"></script> -->
