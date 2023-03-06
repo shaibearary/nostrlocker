@@ -143,56 +143,106 @@ ol {display: table; margin-left: 0; margin-right: auto; list-style-position: ins
   flex: 1;
 }
 
+/* .delete-button {
+  flex: 0 0 20%;
+  margin-left: 10%;
+} */
+/* Style for the navigation bar container */
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  height: 60px;
+  padding: 0 30px;
+  box-sizing: border-box;
+  width: 100%;
+
+}
+
+.navbar .nav-link {
+  text-transform: uppercase;
+}
+/* Style for the links within the navigation bar */
+.navbar a {
+  font-size: 18px;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-right: 20px;
+  padding: 0 10px;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+/* Style for the active link within the navigation bar */
+.navbar a.active {
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+/* Style for links on hover within the navigation bar */
+.navbar a:hover {
+  color: #4CAF50;
+}
+
+/* Style for the bar to separate the links */
+/* .navbar::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-50%);
+} */
+
+/* Style to position the links to the left */
+.navbar__links {
+  margin-right: auto;
+}
+
+/* .form-row-container label {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding-right: 10px;
+} */
+
+
 .delete-button {
   flex: 0 0 20%;
   margin-left: 10%;
 }
-
-
-.sidebar {
-  position: fixed;
-  top: 50%;
-  left: -200px;
-  width: 200px;
-  height: 200px;
-  background-color: #333;
-  color: #f2f2f2;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  transition: left 0.3s ease-in-out;
-  display: none;
+/* 
+.form-row {
+  display: inline-block;
 }
 
-.sidebar.active {
-  display: block;
-  left: 0;
+.form-row * {
+  display: inline-block;
+} */
+/* .input-group {
+  display: inline-block;
+} */
+
+/* div {
+  display: inline-block;
+} */
+.input-group {
+  display: flex;
+  align-items: center;
 }
 
-.sidebar h3 {
-  margin: 0;
-  padding: 10px;
-  font-size: 18px;
-  font-weight: bold;
+.input-contact-area {
+  flex: 1;
 }
 
-.sidebar ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
 
-.sidebar li {
-  margin-bottom: 10px;
-}
 
-.sidebar li a {
-  display: block;
-  padding: 10px;
-  color: #f2f2f2;
-  text-decoration: none;
-  transition: background-color 0.3s ease-in-out;
-}
 
-.sidebar li a:hover {
-  background-color: #444;
-}

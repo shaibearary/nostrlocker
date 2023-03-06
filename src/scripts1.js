@@ -1,5 +1,5 @@
 import { nip19, getBlankEvent, SimplePool } from "nostr-tools";
-import { getValue, addRow } from './form.js';
+import { getValue, addRowTable } from './form.js';
 const defaultRelays =
   ["wss://relay.damus.io",
     "wss://nostr-pub.wellorder.net",
@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
       event.pubkey = await nostr.getPublicKey();
       // event.content = JSON.stringify(relaysObj);
       event.created_at = Math.floor(Date.now() / 1000);
-    event.tags = relaysObj
+      event.tags = relaysObj
   
       let storedEvent = JSON.stringify(event);
       localStorage.setItem('nip65Event', storedEvent);
@@ -58,10 +58,10 @@ window.addEventListener("load", async () => {
   
     }
   async function restore() {
-    let kind3Event = JSON.parse(localStorage.getItem('kind3Event'))
-    if (kind3Event != null) {
+    let nip65Event = JSON.parse(localStorage.getItem('nip65Event'))
+    if (nip65Event != null) {
       
-      populateRelays(kind3Event)
+      populateRelays(nip65Event)
      
     }
   }
@@ -87,7 +87,7 @@ window.addEventListener("load", async () => {
       document.getElementsByName("relay")[0].value = relays[0]
       // const keys = Object.keys(state.content);
       for (let i = 1; i < relays.length; i++) {
-        addRow()
+        addRowTable()
         document.getElementsByName("relay")[i].value = relays[i]
       }
     }
@@ -128,35 +128,26 @@ export default async function startPool(pubkey) {
 }
 function populateRelays(event, relay) {
   if (state && state.created_at > event.created_at) return;
-  if( event.content=="") return;
-  state = {
-    created_at: event.created_at,
-    content: JSON.parse(event.content)
-  };
-  if (state.content.length == 1) {
-    document.getElementsByClassName("input-relay-area")[0].value = Object.keys(state.content)[0]
+
+  let tags = event.tags
+  if (tags.length==0){
+    return;
   }
   else {
-    document.getElementsByClassName("input-relay-area")[0].value = Object.keys(state.content)[0]
-    const keys = Object.keys(state.content);
-    for (let i = 1; i < keys.length; i++) {
-      addInput()
-      document.getElementsByClassName("input-relay-area")[i].value = Object.keys(state.content)[i]
-    }
+    console.log(tags[0].includes('read'))
+    document.getElementsByName("relay")[0].value =tags[0][1]||""
+    document.getElementsByName("read")[0].checked = tags[0].includes('read')
+    document.getElementsByName("write")[0].checked =tags[0].includes('write')
+    // const keys = Object.keys(state.content);
+    for (let i = 1; i < tags.length; i++) {
+      addRowTable()
+      console.log(Boolean(tags[i][3]))
+      document.getElementsByName("relay")[i].value =tags[i][1]||""
+      document.getElementsByName("read")[i].checked= tags[i].includes('read')
+      document.getElementsByName("write")[i].checked =tags[i].includes('write')
   }
 
-
-  async function startPool(pubkey) {
-    const userRelays = await nostr?.getRelays?.() || [];
-    const relays = defaultRelays;
-    for (const key in userRelays) {
-      relays.set(key, userRelays[key]);
-    }
-    relays.forEach((policy, url) => {
-      pool.addRelay(url, policy);
-    });
-    console.log(`fetch metadata from ${pubkey}`);
-    pool.sub({ cb: populateInputs, filter: { authors: [pubkey], kinds: [0] } });
+  
   }
 }
 
@@ -184,28 +175,4 @@ const inputContainer = document.getElementById("input-container");
 const subnprofile = document.getElementById("submit-nprofile-button");
 const addButton = document.getElementById("add-button");
 const submitButton = document.getElementById("submit-relay-button");
-
-
-
-function addInput() {
-  const inputGroup = document.createElement("div");
-  inputGroup.classList.add("input-group");
-
-  const inputArea = document.createElement("input");
-  inputArea.type = "text";
-  inputArea.classList.add("input-relay-area");
-
-  const deleteButton = document.createElement("button");
-  deleteButton.innerText = "Delete";
-  deleteButton.classList.add("delete-button");
-
-  deleteButton.addEventListener("click", () => {
-    inputGroup.remove();
-  });
-
-  inputGroup.appendChild(inputArea);
-  inputGroup.appendChild(deleteButton);
-  inputContainer.appendChild(inputGroup);
-}
-
 

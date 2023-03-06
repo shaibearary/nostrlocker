@@ -6,10 +6,10 @@
   </head>
   <body>
     <!-- The sidebar -->
-    <div class="sidebar">
+    <div class="navbar">
       <a href="index.html">Set metadata</a>
        <a href="index1.html">Manage relay list</a>
-      <a href="index2.html">Manage contact list</a> -->
+      <a href="index2.html">Manage contact list</a> 
     </div>
     <meta charset="UTF-8" />
     <meta
@@ -48,33 +48,31 @@
           >) to use this tool</small
         >
       </div>
-      <form id="myForm">
-        <div class="form-row-container">
-            <label class="form-row">
-                <label for="relayInput">Relay:</label>
-                <input type="text" id="relayInput" name="relay">
-            </label>
+      <table id="table">
+		<thead>
+			<tr>
+				<th>Relay</th>
+				<th>Read</th>
+				<th>Write</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input type="text" id="relayInput" name="relay"></td>
+				<td><input type="checkbox" id="readCheckbox" name="read"></td>
+				<td><input type="checkbox" id="writeCheckbox" name="write"></td>
+				<td><a href="#" role="button" class="delete-row">Delete</a></td>
+			</tr>
 
-            <label class="form-row">
-                <label for="readCheckbox">Read:</label>
-                <input type="checkbox" id="readCheckbox" name="read">
-            </label>
-
-            <label class="form-row">
-                <label for="writeCheckbox">Write:</label>
-                <input type="checkbox" id="writeCheckbox" name="write">
-            </label>
-            
-            <a href="#" role="button" onclick="deleteRow(this.parentNode)">Delete</a>
-            <!-- <input role="button" type="button" value="Delete" onclick="deleteRow(this.parentNode)"> -->
-          </div>
-		
-    </form>
+			<!-- Add more rows here -->
+		</tbody>
+	</table>
     <div id="myRows"></div>
-
+    <div class="grid">
     <input type="button" value="Add Relay" id="addRowBtn">
     <input type="button" value="Submit" id="submitRelaysBtn">
-
+      </div>
         <div>
         
           <hr class="split-line">
