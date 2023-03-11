@@ -1,17 +1,17 @@
-import { getBlankEvent, relayPool } from "nostr-tools";
+import { getBlankEvent, SimplePool } from "nostr-tools";
+let  defaultRelays =
+  ["wss://relay.damus.io","wss://nostr-pub.wellorder.net",
+    "wss://nostr-verified.wellorder.net",
+    "wss://expensive-relay.fiatjaf.com",
+    "wss://nostr-relay.wlvs.space",
+    "wss://brb.io"]
 
-const defaultRelays = new Map([
-  ["wss://relay.damus.io", { read: true, write: true }],
-  ["wss://nostr-pub.wellorder.net", { read: true, write: true }],
-  ["wss://nostr-verified.wellorder.net", { read: true, write: true }],
-  ["wss://expensive-relay.fiatjaf.com", { read: true, write: true }],
-  ["wss://nostr-relay.wlvs.space", { read: true, write: true }]
-]);
-
-const pool = relayPool();
+const pool = new SimplePool();
 let state = null;
+// relayList = null
 
 window.addEventListener("load", async () => {
+  console.log("a")
   if (!window.nostr) {
     alert("You need a NIP-07 browser extension (Alby, nos2x) to use this tool!");
     return;
@@ -20,12 +20,13 @@ window.addEventListener("load", async () => {
   const nostr = window.nostr;
   const pubkey = await nostr.getPublicKey();
 
-  await startPool(pubkey);
+  // await startPool(pubkey);
+  await restore(pubkey)
   console.log(state);
   const form = document.getElementById("form");
   const sendBtn = document.getElementById("send-event");
   sendBtn.addEventListener("click", logKey, false);
-
+  console.log("a")
   document.getElementById("picture").addEventListener("change", (ev) => {
     let src = ev.target.value;
     let image = document.getElementById("image-display").firstElementChild;
@@ -58,35 +59,52 @@ window.addEventListener("load", async () => {
     event.content = JSON.stringify(content);
     event.created_at = Math.floor(Date.now() / 1000);
     console.log(event);
+    let storedEvent = JSON.stringify(event);
+    localStorage.setItem('metadata', storedEvent);
     try {
       const signed = await nostr.signEvent(event);
 
-      const ev = await pool.publish(signed, (status, url) => {
-        if (status === 0) {
-          console.log(`publish request sent to ${url}`);
-        }
-        if (status === 1) {
-          console.log(`event published by ${url}`, ev);
-        }
-      });
+      let pubs = pool.publish(defaultRelays, signed)
+      pubs.on('ok', () => {
+        console.log(`has accepted our event`)
+      })
+      pubs.on('failed', reason => {
+        console.log(`failed to publish to : ${reason}`)
+      })
+
       form.reset();
     } catch (error) {
       console.error(error);
     }
   }
 });
+async function restore(pubkey) {
+  let metadata = JSON.parse(localStorage.getItem('metadata'))
+  if (localStorage.getItem('metadata') != null) {
+    console.log()
+    populateInputs(metadata)
+  }
+  startPool(pubkey)
 
-async function startPool(pubkey) {
+
+}
+export default async function startPool(pubkey) {
   const userRelays = await nostr?.getRelays?.() || [];
   const relays = defaultRelays;
-  for (const key in userRelays) {
-    relays.set(key, userRelays[key]);
-  }
+  let sub = pool.sub(
+    defaultRelays,
+    [
+      { authors: [pubkey], kinds: [0] }
+    ]
+  )
+  // for (const key in userRelays) {
+  //   relays.set(key, userRelays[key]);
+  // }
   relays.forEach((policy, url) => {
-    pool.addRelay(url, policy);
+    // pool.addRelay(url, policy);
   });
   console.log(`fetch metadata from ${pubkey}`);
-  pool.sub({ cb: populateInputs, filter: { authors: [pubkey], kinds: [0] } });
+
 }
 
 function populateInputs(event, relay) {
@@ -131,3 +149,44 @@ function isImage(url) {
     "sig": <64-bytes signature of the sha256 hash of the serialized event data, which is the same as the "id" field>
   }
   */
+const inputContainer = document.getElementById("input-container");
+const addButton = document.getElementById("add-button");
+const submitButton = document.getElementById("submit-relay-button");
+
+function addInput() {
+  const inputGroup = document.createElement("div");
+  inputGroup.classList.add("input-group");
+
+  const inputArea = document.createElement("input");
+  inputArea.type = "text";
+  inputArea.classList.add("input-area");
+
+  const deleteButton = document.createElement("button");
+  deleteButton.innerText = "Delete";
+  deleteButton.classList.add("delete-button");
+
+  deleteButton.addEventListener("click", () => {
+    inputGroup.remove();
+  });
+
+  inputGroup.appendChild(inputArea);
+  inputGroup.appendChild(deleteButton);
+  inputContainer.appendChild(inputGroup);
+}
+
+
+function submitRelays() {
+  var myForm = document.getElementsByClassName("input-area");
+  console.log(myForm[1].value)
+
+  // Get the values of the form elements
+  // var nameVal = myForm["name"].value;
+  // var emailVal = myForm["email"].value;
+  // var messageVal = myForm["message"].value;
+
+  // // Display the values in an alert box
+  // alert("Name: " + nameVal + "\nEmail: " + emailVal + "\nMessage: " + messageVal);
+
+}
+addButton.addEventListener("click", addInput);
+submitButton.addEventListener("click", submitRelays);

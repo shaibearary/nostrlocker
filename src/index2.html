@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css">
+
+  </head>
+  <body>
+    <!-- The sidebar -->
+    <div class="navbar">
+      <a href="index.html">Set metadata</a>
+       <a href="index1.html">Manage relay list</a>
+      <a href="index2.html">Manage contact list</a> 
+    </div>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <title>Nostr Metadata</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css" />
+    <style>
+      .header {
+        margin-bottom: 3rem;
+      }
+      .header h1 {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <div class="header">
+        <h1>Manage contact list</h1>
+        <small
+          >You need to have a signing browser extension (<a
+            href="https://github.com/nostr-protocol/nips/blob/master/07.md#nip-07"
+            target="_blank"
+            rel="noopener noreferrer"
+            >NIP07</a
+          >) to use this tool</small
+        >
+      </div>
+      <form id="form">
+        <div id="input-container">
+          <div class="input-group">
+            <input type="text" class="input-contact-area">
+            <button  type="button" class="delete-button">Delete</button>
+          </div>
+        </div>
+        <div class="grid">
+          <button  type="button" id="add-button">Add contact</button>
+          <button  type="button" id="submit-contact-button">Submit</button>
+        </div>
+      </form>
+    </main>
+    <script
+      type="module"
+      src="scripts2.js"></script>
+      <!-- <script
+      type="module"
+      src="scripts.js"></script> -->
+  </body>
+</html>

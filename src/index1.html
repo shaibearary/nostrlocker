@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css">
+
+  </head>
+  <body>
+    <!-- The sidebar -->
+    <div class="navbar">
+      <a href="index.html">Set metadata</a>
+       <a href="index1.html">Manage relay list</a>
+      <a href="index2.html">Manage contact list</a> 
+    </div>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <title>Nostr Metadata</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css" />
+    <style>
+      .header {
+        margin-bottom: 3rem;
+      }
+      .header h1 {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <div class="header">
+        <h1>Manage relay list</h1>
+        <small
+          >You need to have a signing browser extension (<a
+            href="https://github.com/nostr-protocol/nips/blob/master/07.md#nip-07"
+            target="_blank"
+            rel="noopener noreferrer"
+            >NIP07</a
+          >) to use this tool</small
+        >
+      </div>
+      <table id="table">
+		<thead>
+			<tr>
+				<th>Relay</th>
+				<th>Read</th>
+				<th>Write</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input type="text" id="relayInput" name="relay"></td>
+				<td><input type="checkbox" id="readCheckbox" name="read"></td>
+				<td><input type="checkbox" id="writeCheckbox" name="write"></td>
+				<td><a href="#" role="button" class="delete-row">Delete</a></td>
+			</tr>
+
+			<!-- Add more rows here -->
+		</tbody>
+	</table>
+    <div id="myRows"></div>
+    <div class="grid">
+    <input type="button" value="Add Relay" id="addRowBtn">
+    <input type="button" value="Submit" id="submitRelaysBtn">
+      </div>
+        <div>
+        
+          <hr class="split-line">
+          <ul>
+            <li v-for="(innerArr, index) in outputArray" :key="index">
+              or input nprofile
+            </li>
+            <form id="form">
+              <div id="input-container">
+                <div class="input-group">
+                  <input type="text" id="input-nprofile-area">
+                 
+                </div>
+              </div>
+              <div class="input-group">
+
+                <button  type="button" id="parse-nprofile-button">Parse nprofile</button>
+              </div>
+            </form>
+          </ul>
+        </div>
+      
+      
+      <style>
+      .split-line {
+        border: none;
+        height: 1px;
+        background-color: #ccc;
+        margin: 1em 0;
+      }
+      
+      .split-line::before {
+        content: '|';
+        display: inline-block;
+        position: relative;
+        top: -0.5em;
+        background-color: white;
+        padding: 0 0.5em;
+      }
+      </style>
+      
+    </main>
+    <script
+      type="module"
+      src="scripts1.js"></script>
+      <script type="module" src="main.js"></script>
+      <!-- <script
+      type="module"
+      src="scripts.js"></script> -->
+  </body>
+</html>
