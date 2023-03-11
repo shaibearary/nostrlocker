@@ -1,4 +1,4 @@
-# nostrbench
+# nostrlocker
 
 This is an extension of https://github.com/talvasconcelos/metanostr
 
