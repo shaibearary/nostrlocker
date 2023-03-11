@@ -11,22 +11,16 @@ let state = null;
 // relayList = null
 
 window.addEventListener("load", async () => {
-  console.log("a")
   if (!window.nostr) {
     alert("You need a NIP-07 browser extension (Alby, nos2x) to use this tool!");
     return;
   }
-
   const nostr = window.nostr;
-  const pubkey = await nostr.getPublicKey();
-
   // await startPool(pubkey);
-  await restore(pubkey)
-  console.log(state);
+  await restore(nostr.getPublicKey())
   const form = document.getElementById("form");
   const sendBtn = document.getElementById("send-event");
   sendBtn.addEventListener("click", logKey, false);
-  console.log("a")
   document.getElementById("picture").addEventListener("change", (ev) => {
     let src = ev.target.value;
     let image = document.getElementById("image-display").firstElementChild;
