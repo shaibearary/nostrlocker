@@ -19,8 +19,8 @@ window.addEventListener("load", async () => {
   }
 
   const nostr = window.nostr;
-  const pubkey = await nostr.getPublicKey();
-  startPool(pubkey)
+
+  startPool(nostr.getPublicKey())
  
   const form = document.getElementById("form");
   restore()
