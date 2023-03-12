@@ -2,7 +2,13 @@
 
 This is an extension of https://github.com/talvasconcelos/metanostr
 
+Problem:
 People suffer from losing their contacts so I develop this mico-app for user easily find out their backup if their data is modified by other app.
+eg: Losting all their contacts
+
+Solution:
+People manage their own data via a micro web app and store them locally. 
+When it is modified by other app, you can always go back here to restore.
 
 You can try it at https://nostr-manager.netlify.app/
 
