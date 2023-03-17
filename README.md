@@ -16,3 +16,7 @@ TODO
 
 - [ ] Add relay support to so people will know/can control where their meta data/relay/contacts list will be posted to
 - [ ] Add result feed back so they will know the result of post
+- [ ] Problem: Input over 50+ contact by pubkey is imposstble
+      solution: support fetch contact list from a relay
+- [ ] Problem: people are more used to npub
+      solution: add npub support
